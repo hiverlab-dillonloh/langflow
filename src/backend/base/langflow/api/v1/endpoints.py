@@ -764,7 +764,8 @@ async def webhook_events_stream(
     )
 
 
-@router.post("/webhook/{flow_id_or_name}", response_model=dict, status_code=HTTPStatus.ACCEPTED)  # noqa: RUF100, FAST003
+# need 200 response for engagelab to consider webhook successful
+@router.post("/webhook/{flow_id_or_name}", response_model=dict, status_code=HTTPStatus.OK)  # noqa: RUF100, FAST003
 async def webhook_run_flow(
     flow_id_or_name: str,
     flow: Annotated[Flow, Depends(get_flow_by_id_or_endpoint_name)],
@@ -842,7 +843,7 @@ async def webhook_run_flow(
         error_msg = str(exc)
         raise HTTPException(status_code=500, detail=error_msg) from exc
 
-    return {"message": "Task started in the background", "status": "in progress"}
+    return {"message": "Webhook accepted", "status": "ok"}
 
 
 @router.post(

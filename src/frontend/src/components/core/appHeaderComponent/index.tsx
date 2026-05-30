@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import AlertDropdown from "@/alerts/alertDropDown";
-import LangflowLogo from "@/assets/LangflowLogo.svg?react";
-import ForwardedIconComponent from "@/components/common/genericIconComponent";
 import ModelProviderCount from "@/components/common/modelProviderCountComponent";
 import ShadTooltip from "@/components/common/shadTooltipComponent";
 import { Button } from "@/components/ui/button";
@@ -61,77 +59,22 @@ export default function AppHeader(): JSX.Element {
       >
         <Button
           unstyled
+          ignoreTitleCase
           onClick={() => navigate("/")}
-          className="mr-1 flex h-8 w-8 items-center"
+          className="mr-1 flex h-8 items-center text-sm font-semibold text-foreground"
           data-testid="icon-ChevronLeft"
         >
-          <LangflowLogo className="h-5 w-5" />
+          SkillsConnection CRM Agent
         </Button>
         <CustomOrgSelector />
       </div>
 
-      {/* Middle Section */}
-      <div className="absolute left-1/2 -translate-x-1/2">
+      {/* Right Section */}
+      <div className="ml-auto">
         <FlowMenu />
       </div>
 
-      {/* Right Section */}
-      <div
-        className={`relative left-3 z-30 flex shrink-0 items-center gap-3`}
-        data-testid="header_right_section_wrapper"
-      >
-        {false && <ModelProviderCount />}
-        <div className="hidden pr-2 whitespace-nowrap lg:inline-flex lg:items-center">
-          <CustomLangflowCounts />
-        </div>
-        <AlertDropdown
-          notificationRef={notificationContentRef}
-          onClose={() => setActiveState(null)}
-        >
-          <ShadTooltip
-            content={t("header.notifications")}
-            side="bottom"
-            styleClasses="z-10"
-          >
-            <AlertDropdown onClose={() => setActiveState(null)}>
-              <Button
-                ref={notificationRef}
-                unstyled
-                onClick={() =>
-                  setActiveState((prev) =>
-                    prev === "notifications" ? null : "notifications",
-                  )
-                }
-                data-testid="notification_button"
-              >
-                <div className="hit-area-hover group relative items-center rounded-md px-2 py-2 text-muted-foreground">
-                  <span className={getNotificationBadge()} />
-                  <ForwardedIconComponent
-                    name="Bell"
-                    className={`side-bar-button-size h-4 w-4 ${
-                      activeState === "notifications"
-                        ? "text-primary"
-                        : "text-muted-foreground group-hover:text-primary"
-                    }`}
-                    strokeWidth={2}
-                  />
-                  <span className="hidden whitespace-nowrap">
-                    {t("header.notificationsLabel")}
-                  </span>
-                </div>
-              </Button>
-            </AlertDropdown>
-          </ShadTooltip>
-        </AlertDropdown>
-        <Separator
-          orientation="vertical"
-          className="my-auto h-7 dark:border-border"
-        />
-
-        <div className="flex">
-          <CustomAccountMenu />
-        </div>
-      </div>
+      
     </div>
   );
 }

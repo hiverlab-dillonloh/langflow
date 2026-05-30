@@ -53,8 +53,7 @@ COPY ./src/sdk/README.md /app/src/sdk/README.md
 
 # Install the project's dependencies using the lockfile and settings
 # We need to mount the root uv.lock and pyproject.toml to build the base with uv because we're still using uv workspaces
-RUN --mount=type=cache,target=/root/.cache/uv \
-    RUSTFLAGS='--cfg reqwest_unstable' \
+RUN RUSTFLAGS='--cfg reqwest_unstable' \
     cd src/backend/base && uv sync --frozen --no-install-project --no-dev --no-editable --extra postgresql
 
 COPY ./src /app/src
@@ -69,8 +68,7 @@ RUN npm install \
     && rm -rf /tmp/src/frontend
 
 WORKDIR /app/src/backend/base
-RUN --mount=type=cache,target=/root/.cache/uv \
-    RUSTFLAGS='--cfg reqwest_unstable' \
+RUN RUSTFLAGS='--cfg reqwest_unstable' \
     uv sync --frozen --no-dev --no-editable --extra postgresql
 
 ################################
@@ -113,5 +111,7 @@ WORKDIR /app
 
 ENV LANGFLOW_HOST=0.0.0.0
 ENV LANGFLOW_PORT=7860
+
+RUN /app/.venv/bin/pip install openai
 
 CMD ["langflow-base", "run"]
